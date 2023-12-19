@@ -1,0 +1,62 @@
+define([
+  "N/currentRecord",
+  "N/ui/dialog",
+  "N/record",
+  "N/ui/message",
+  "N/search",
+], function (currentRecord, dialog, record, message, search) {
+  function scheduleinit() {
+    var warehouseReceipt_Record = currentRecord.get();
+    var warehouseReceipt_Record_Id = warehouseReceipt_Record.id;
+    var warehouseReceipt_Record_type = warehouseReceipt_Record.type;
+    var warehouseReceipt_Record_processing = warehouseReceipt_Record.getValue({
+      fieldId: "custrecord_kb_receipt_processing_status",
+    });;
+///// START UPDATE ///////////////////////////////////////////////
+    try{
+
+      var wrRecordLoad = record.load({
+        type: warehouseReceipt_Record_type, 
+        id: warehouseReceipt_Record_Id,
+        isDynamic: true,
+    });
+
+    wrRecordLoad.setValue({
+      fieldId: 'custrecord_kb_receipt_processing_status',
+      value: 4,
+      ignoreFieldChange: true
+  });
+
+  wrRecordLoad.save()
+window.location.reload();
+
+      
+
+
+    }
+    
+catch(e)
+    {
+      console.log(e)
+    }
+
+    ///// START UPDATE ///////////////////////////////////////////////
+    
+
+ 
+    var suiteletURL =
+      "/app/site/hosting/scriptlet.nl?script=653&deploy=1&param1=" +
+      warehouseReceipt_Record_Id +
+      "&param2=" +
+      warehouseReceipt_Record_type  +
+      "&param3=" +
+      warehouseReceipt_Record_processing +
+      "&param4=" +
+      oldestDateString;
+    window.open(suiteletURL, "_blank", "width=980,height=520, menubar=no, scrollbars=no,titlebar=no,resizable=no,toolbar=no, top=200, left=450");
+  }
+
+  return {
+    scheduleinit: scheduleinit,
+  };
+});
